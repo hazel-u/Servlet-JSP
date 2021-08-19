@@ -1,40 +1,150 @@
 package com.newlecture.web;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/calculator")
 public class Calculator extends HttpServlet{
-	/* 
-	 * 밑에 doPost, doGet을 overriding하면 service를 override할 필요가 없다.
 	@Override
-	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Cookie[] cookies = request.getCookies();
 		
-		// GET과 POST 나눠서 출력하는 첫번째 방법
-		if(req.getMethod().equals("GET")) { // 반드시 대문자로  비교
-			System.out.println("GET요청이 왔습니다.");
+		String exp="0";
+		if(cookies!=null) {
+			for(Cookie c : cookies) {
+				if(c.getName().equals("exp")) {
+					exp=c.getValue();
+					break;
+				}
+			}
 		}
-		else if(req.getMethod().equals("POST")) {
-			System.out.println("POST요청이 왔습니다.");			
-		}
 		
-		super.service(req, resp); // doGET, doPOST 오버라이딩 필요, 오버라이딩 안하면 405에러남
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = response.getWriter();
 		
+		out.write("<!DOCTYPE html>");
+		out.write("<html>");
+		out.write("<head>");
+		out.write("<meta charset=\"UTF-8\">");
+		out.write("<title>Insert title here</title>");
+		out.write("<style>");
+		out.write("input{");
+		out.write("	width:50px;");
+		out.write("	height:50px;");
+		out.write("}");
+		out.write(".output{");
+		out.write("	height:50px;");
+		out.write("	background: #e9e9e9;");
+		out.write("	font-size:24px;");
+		out.write("	font-weight:bold;");
+		out.write("	text-align:right;");
+		out.write("	padding:0px 5px;");
+		out.write("}");
+		out.write("</style>");
+		out.write("</head>");
+		out.write("<body>");
+		out.write("	<div>");
+		out.write("		<form method=\"post\">");
+		out.write("			<table>");
+		out.write("				<tr>");
+		out.printf("					<td class=\"output\" colspan=\"4\">%s</td>", exp);
+		out.write("				</tr>");
+		out.write("				<tr>");
+		out.write("					<td><input type=\"submit\" name=\"operator\" value=\"CE\"/></td>");
+		out.write("					<td><input type=\"submit\" name=\"operator\" value=\"C\"/></td>");
+		out.write("					<td><input type=\"submit\" name=\"operator\" value=\"BS\"/></td>");
+		out.write("					<td><input type=\"submit\" name=\"operator\" value=\"/\"/></td>");
+		out.write("				</tr>");
+		out.write("				<tr>");
+		out.write("					<td><input type=\"submit\" name=\"value\" value=\"7\"/></td>");
+		out.write("					<td><input type=\"submit\" name=\"value\" value=\"8\"/></td>");
+		out.write("					<td><input type=\"submit\" name=\"value\" value=\"9\"/></td>");
+		out.write("					<td><input type=\"submit\" name=\"operator\" value=\"*\"/></td>");
+		out.write("				</tr>");
+		out.write("				<tr>");
+		out.write("					<td><input type=\"submit\" name=\"value\" value=\"4\"/></td>");
+		out.write("					<td><input type=\"submit\" name=\"value\" value=\"5\"/></td>");
+		out.write("					<td><input type=\"submit\" name=\"value\" value=\"6\"/></td>");
+		out.write("					<td><input type=\"submit\" name=\"operator\" value=\"-\"/></td>");
+		out.write("				</tr>");
+		out.write("				<tr>");
+		out.write("					<td><input type=\"submit\" name=\"value\" value=\"1\"/></td>");
+		out.write("					<td><input type=\"submit\" name=\"value\" value=\"2\"/></td>");
+		out.write("					<td><input type=\"submit\" name=\"value\" value=\"3\"/></td>");
+		out.write("					<td><input type=\"submit\" name=\"operator\" value=\"+\"/></td>");
+		out.write("				</tr>");
+		out.write("				<tr>");
+		out.write("					<td></td>");
+		out.write("					<td><input type=\"submit\" name=\"value\" value=\"0\"/></td>");
+		out.write("					<td><input type=\"submit\" name=\"dot\" value=\".\"/></td>");
+		out.write("					<td><input type=\"submit\" name=\"operator\" value=\"=\"/></td>");
+		out.write("				</tr>");
+		out.write("			</table>");
+		out.write("		</form>");
+		out.write("	</div>");
+		out.write("</body>");
+		out.write("</html>");
 		
-	}
-	*/
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("doGET 메소드가 호출되었습니다.");
 	}
 	
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("doPOST 메소드가 호출되었습니다.");
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Cookie[] cookies = request.getCookies();
+		
+		String value = request.getParameter("value");
+		String operator = request.getParameter("operator");
+		String dot = request.getParameter("dot");
+			
+		String exp="";
+		if(cookies!=null) {
+			for(Cookie c : cookies) {
+				if(c.getName().equals("exp")) {
+					exp=c.getValue();
+					break;
+				}
+			}
+		}
+		
+		if(operator!=null && operator.equals("=")) {
+			ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
+			try {
+				exp = String.valueOf(engine.eval(exp));
+			} catch (ScriptException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else if(operator!=null && operator.equals("C")) {
+			exp="";
+		}
+		else {
+			exp+=(value==null)?"":value;
+			exp+=(operator==null)?"":operator;
+			exp+=(dot==null)?"":dot;
+		}
+		
+		
+		
+		Cookie expCookie = new Cookie("exp", exp);
+		if(operator!=null && operator.equals("C")) {
+			expCookie.setMaxAge(0);
+		}
+		
+		//expCookie.setPath(""); // ""로하면 root가 된다. 이 웹사이트에서 사용하는 모든 url에 이 쿠키가 전달된다.
+		//expCookie.setPath("/calc3"); // calcpage로도 보내고 싶은데,, setPath설정은 하나만 가능하다. -> 그냥 calc3하고 calcpage하고 합쳐
+		expCookie.setPath("/calculator"); // 지금 url에만 쿠키가 전달되니까 다른 url에서는 이 쿠키를 사용 못한다.
+		response.addCookie(expCookie);
+		response.sendRedirect("calculator"); // get요청을 호출
 	}
 }

@@ -16,9 +16,9 @@ import javax.servlet.http.HttpSession;
 public class CalcPage extends HttpServlet {
 
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Cookie[] cookies = request.getCookies();
 		
 		String exp="0";
-		Cookie[] cookies = request.getCookies();
 		if(cookies!=null) {
 			for(Cookie c : cookies) {
 				if(c.getName().equals("exp")) {

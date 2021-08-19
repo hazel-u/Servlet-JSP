@@ -58,6 +58,9 @@ public class Calc3 extends HttpServlet {
 		if(operator!=null && operator.equals("C")) {
 			expCookie.setMaxAge(0);
 		}
+		
+		//expCookie.setPath(""); // ""로하면 root가 된다. 이 웹사이트에서 사용하는 모든 url에 이 쿠키가 전달된다.
+		expCookie.setPath("/calc3"); // calcpage로도 보내고 싶은데,, setPath설정은 하나만 가능하다. -> 그냥 calc3하고 calcpage하고 합쳐
 		response.addCookie(expCookie);
 		response.sendRedirect("calcpage");
 	}
