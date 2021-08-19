@@ -61,7 +61,7 @@ public class CalcPage extends HttpServlet {
 		out.write("				</tr>");
 		out.write("				<tr>");
 		out.write("					<td><input type=\"submit\" name=\"operator\" value=\"CE\"/></td>");
-		out.write("					<td><input type=\"submit\" name=\"operator\" value=\"E\"/></td>");
+		out.write("					<td><input type=\"submit\" name=\"operator\" value=\"C\"/></td>");
 		out.write("					<td><input type=\"submit\" name=\"operator\" value=\"BS\"/></td>");
 		out.write("					<td><input type=\"submit\" name=\"operator\" value=\"/\"/></td>");
 		out.write("				</tr>");
