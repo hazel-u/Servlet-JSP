@@ -2,11 +2,17 @@
     pageEncoding="UTF-8"%>
     
 <%
+	// Controller : C
 	int num=0;
 	String num_ = request.getParameter("n");
 	if(num_ != null && !num_.equals("")){
 		num = Integer.parseInt(num_);
 	}
+	
+	String result;
+	if(num%2 != 0) result = "홀수";
+	else result = "짝수";
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -15,10 +21,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<%if(num%2 != 0){ %>
-	홀수 입니다.
-	<%} else{ %>
-	짝수 입니다.
-	<%} %>
+	<% // View, Model %>
+	<%=result %>입니다.
 </body>
 </html>
