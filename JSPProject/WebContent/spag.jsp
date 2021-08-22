@@ -7,13 +7,21 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<%
+	pageContext.setAttribute("result", "pageResult");
+%>
 <body>
-	${result}입니다. <br>
+	${requestScope.result}입니다. <br>
 	
 	${names[0]} <br>
 	${names[1]} <br>
 	
 	${notice.title} <br>
 	${notice.id} <br>
+	
+	${result} <br>
+	
+	${param.n} <br>
+	${header.accept} <br>
 </body>
 </html>
