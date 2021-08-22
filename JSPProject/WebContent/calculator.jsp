@@ -3,7 +3,7 @@
 	int y=4;
 	// int page=3; -> page is an implicit object in JSP. Error ocured.
 	/*
-		implicit object name 
+		<implicit object name> 
 		- request, response
 		- pageContext
 		- session
