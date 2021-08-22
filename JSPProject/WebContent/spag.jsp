@@ -8,6 +8,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<%= request.getAttribute("result") %>입니다.
+	${result}입니다. <br>
+	
+	${names[0]} <br>
+	${names[1]} <br>
+	
+	${notice.title} <br>
+	${notice.id} <br>
 </body>
 </html>
