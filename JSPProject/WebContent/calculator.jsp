@@ -1,14 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <%
 	int x=3;
-	int y=5;
-%>
-
-<%!
-	int sum(int x, int y){
-		return x+y;	
-	}
+	int y=4;
+	// int page=3; -> page is an implicit object in JSP. Error ocured.
+	/*
+		implicit object name 
+		- request, response
+		- pageContext
+		- session
+		- application
+		- config
+		- out
+		- page
+	*/
 %>
 
 <!DOCTYPE html>
