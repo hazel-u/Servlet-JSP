@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
-public class Program {
+public class Program_select {
 
 	public static void main(String[] args) throws SQLException, ClassNotFoundException {
 		
