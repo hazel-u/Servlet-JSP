@@ -18,8 +18,8 @@ public class NoticeService {
 	private String pwd = "ssafy";
 	private String driver = "oracle.jdbc.driver.OracleDriver";
 	
-	public List<?> getList() throws ClassNotFoundException, SQLException{
-		String sql = "select * from notice_ where hit>=10";
+	public List<Notice> getList() throws ClassNotFoundException, SQLException{
+		String sql = "select * from notice_";
 		
 		Class.forName(driver);
 		Connection con = DriverManager.getConnection(url, uid, pwd);
