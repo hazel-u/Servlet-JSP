@@ -7,8 +7,8 @@ import com.newlecture.app.consol.NoticeConsole;
 public class Program5 {
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		
+		NoticeConsole console = new NoticeConsole();
 		EXIT:while(true) {
-			NoticeConsole console = new NoticeConsole();
 			console.printNoticeList();
 			int menu = console.inputNoticeMenu();
 			
@@ -16,8 +16,10 @@ public class Program5 {
 			case 1: //상세조회
 				break;
 			case 2: // 이전
+				console.movePrevList();
 				break;
 			case 3: // 다음
+				console.moveNextList();
 				break;
 			case 4: // 글쓰기
 				break;
