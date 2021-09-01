@@ -19,9 +19,12 @@ public class NoticeConsole {
 	
 	public void printNoticeList() throws ClassNotFoundException, SQLException{
 		List<Notice> list = service.getList(page);
+		int count = service.getCount(); // notice의 개수
+		int lastPage = count/10;
+		lastPage = count%10==0?lastPage:lastPage+1;
 		
 		System.out.println("─────────────────────────────────");
-		System.out.printf("<공지사항> 총 %d 게시글\n",12);
+		System.out.printf("<공지사항> 총 %d 게시글\n",count);
 		System.out.println("─────────────────────────────────");
 		
 		for(Notice n : list) {
@@ -30,7 +33,7 @@ public class NoticeConsole {
 		}
 		
 		System.out.println("─────────────────────────────────");
-		System.out.printf("             %d/%d         \n",page, 2);
+		System.out.printf("             %d/%d         \n",page, lastPage);
 		
 	}
 
@@ -52,7 +55,15 @@ public class NoticeConsole {
 		page--;
 	}
 
-	public void moveNextList() {
+	public void moveNextList() throws ClassNotFoundException, SQLException {
+		int count = service.getCount(); // notice의 개수
+		int lastPage = count/10;
+		lastPage = count%10==0?lastPage:lastPage+1;
+		
+		if(page==lastPage) {
+			System.out.println("다음 페이지가 없습니다.");
+			return;
+		}
 		page++;
 	}
 	
