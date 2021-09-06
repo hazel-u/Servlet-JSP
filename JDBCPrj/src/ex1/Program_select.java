@@ -12,7 +12,7 @@ public class Program_select {
 	public static void main(String[] args) throws SQLException, ClassNotFoundException {
 		
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String sql = "select * from notice_ where hit>=10";
+		String sql = "select * from notice_";
 		
 		Class.forName("oracle.jdbc.driver.OracleDriver");
 		Connection con = DriverManager.getConnection(url, "NEWLEC", "ssafy");
