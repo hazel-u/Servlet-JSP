@@ -75,7 +75,7 @@ public class NoticeDetailController extends HttpServlet {
 		 	현재 페이지에서 작업했던 내용들을 이어받아서 다음 페이지에서도 사용할 수 있게 하는 방법
 		 	지금은 이 방식을 쓸거임!(dispatcher)
 		 */
-		request.getRequestDispatcher("/notice/detail.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/view/notice/detail.jsp").forward(request, response);
 		
 	}
 }
