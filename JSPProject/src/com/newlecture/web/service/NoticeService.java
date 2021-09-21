@@ -18,7 +18,11 @@ public class NoticeService {
 		return getNoticeList("title","",page);
 	}
 	public List<Notice> getNoticeList(String field, String query, int page){ // 사용자가 검색한 내용을 포함한 글을 불러오는 서비스 메서드
-	
+		
+		String sql = "select * from( " + 
+				"select rownum num, N.* " + 
+				"from (select * from notice_ order by regdate desc) N) " + 
+				"where num between 6 and 10";
 	
 		return null;
 	}	
@@ -29,6 +33,10 @@ public class NoticeService {
 	}
 	
 	public int getNoticeCount(String field, String query) { // 사용자가 검색한 내용을 포함한 글의 개수를 불러오는 서비스 메서드
+		String sql = "select * from( " + 
+				"select rownum num, N.* " + 
+				"from (select * from notice_ order by regdate desc) N) " + 
+				"where num between 6 and 10";
 		
 		return 0;
 	}
