@@ -42,17 +42,27 @@ public class NoticeService {
 	}
 	
 	public Notice getNotice(int id) { // id에 해당하는 글 하나를 불러오는 서비스 메서드
+		String sql = "select * from notice_ where id=?";
 		
 		return null;
 	}
 	
 	public Notice getNextNotice(int id) { // 현재 id의 다음 글을 불러오는 서비스 메서드
+		// 인자로 받은 id의 다음 게시글 id가 무엇인지 알아야한다.
+		String sql = "select * " + 
+				"from notice_ " + 
+				"where id=( " + 
+				"    select id " + 
+				"    from notice_ " + 
+				"    where regdate > (select regdate from notice_ where id=3) and rownum=1)";
 		
 		return null;
 	}
 
 	public Notice getPrevNotice(int id) { // 현재 id의 이전 글을 불러오는 서비스 메서드
-		
+		String sql = "select id " + 
+				"from (select * from notice_ order by regdate desc) " + 
+				"where regdate < (select regdate from notice_ where id=3) and rownum=1";
 		return null;
 	}
 }
