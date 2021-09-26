@@ -85,36 +85,178 @@ public class NoticeService {
 	}
 	
 	public int getNoticeCount(String field, String query) { // 사용자가 검색한 내용을 포함한 글의 개수를 불러오는 서비스 메서드
-		String sql = "select * from( " + 
-				"select rownum num, N.* " + 
-				"from (select * from notice_ order by regdate desc) N) " + 
-				"where num between 6 and 10";
 		
-		return 0;
+		int count = 0;
+		
+		String sql = "select COUNT(ID) count from( " + 
+				"select rownum num, N.* " + 
+				"from (select * from notice_ where "+field+" like ? order by regdate desc) N " + 
+				") ";
+
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Connection con = DriverManager.getConnection(url, "NEWLEC", "ssafy");
+			PreparedStatement st = con.prepareStatement(sql);
+			st.setString(1, "%"+query+"%");
+
+			ResultSet rs = st.executeQuery();
+
+			count = rs.getInt("count");
+
+			try {
+				rs.close();
+				st.close();
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return count;
 	}
 	
 	public Notice getNotice(int id) { // id에 해당하는 글 하나를 불러오는 서비스 메서드
+		Notice notice = null;
+		
 		String sql = "select * from notice_ where id=?";
 		
-		return null;
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Connection con = DriverManager.getConnection(url, "NEWLEC", "ssafy");
+			PreparedStatement st = con.prepareStatement(sql);
+			
+			st.setInt(1, id);
+			
+			ResultSet rs = st.executeQuery();
+
+			if(rs.next()){
+				int nid = rs.getInt("ID");
+				String title = rs.getString("TITLE");
+				String writerId = rs.getString("WRITER_ID");
+				Date regdate = rs.getTimestamp("REGDATE");
+				String hit = rs.getString("HIT");
+				String files = rs.getString("FILES");
+				String content = rs.getString("CONTENT");
+				notice = new Notice(nid, title, writerId, regdate, hit, files, content);
+			}
+
+			try {
+				rs.close();
+				st.close();
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return notice;
 	}
 	
 	public Notice getNextNotice(int id) { // 현재 id의 다음 글을 불러오는 서비스 메서드
+		
+		Notice notice = null;
+		
 		// 인자로 받은 id의 다음 게시글 id가 무엇인지 알아야한다.
 		String sql = "select * " + 
 				"from notice_ " + 
 				"where id=( " + 
 				"    select id " + 
 				"    from notice_ " + 
-				"    where regdate > (select regdate from notice_ where id=3) and rownum=1)";
+				"    where regdate > (select regdate from notice_ where id=3) and rownum=?)";
 		
-		return null;
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Connection con = DriverManager.getConnection(url, "NEWLEC", "ssafy");
+			PreparedStatement st = con.prepareStatement(sql);
+			
+			st.setInt(1, id);
+			
+			ResultSet rs = st.executeQuery();
+
+			if(rs.next()){
+				int nid = rs.getInt("ID");
+				String title = rs.getString("TITLE");
+				String writerId = rs.getString("WRITER_ID");
+				Date regdate = rs.getTimestamp("REGDATE");
+				String hit = rs.getString("HIT");
+				String files = rs.getString("FILES");
+				String content = rs.getString("CONTENT");
+				notice = new Notice(nid, title, writerId, regdate, hit, files, content);
+			}
+
+			try {
+				rs.close();
+				st.close();
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return notice;
 	}
 
 	public Notice getPrevNotice(int id) { // 현재 id의 이전 글을 불러오는 서비스 메서드
+		
+		Notice notice = null;
+		
 		String sql = "select id " + 
 				"from (select * from notice_ order by regdate desc) " + 
-				"where regdate < (select regdate from notice_ where id=3) and rownum=1";
-		return null;
+				"where regdate < (select regdate from notice_ where id=3) and rownum=?";
+		
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Connection con = DriverManager.getConnection(url, "NEWLEC", "ssafy");
+			PreparedStatement st = con.prepareStatement(sql);
+			
+			st.setInt(1, id);
+			
+			ResultSet rs = st.executeQuery();
+
+			if(rs.next()){
+				int nid = rs.getInt("ID");
+				String title = rs.getString("TITLE");
+				String writerId = rs.getString("WRITER_ID");
+				Date regdate = rs.getTimestamp("REGDATE");
+				String hit = rs.getString("HIT");
+				String files = rs.getString("FILES");
+				String content = rs.getString("CONTENT");
+				notice = new Notice(nid, title, writerId, regdate, hit, files, content);
+			}
+
+			try {
+				rs.close();
+				st.close();
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return notice;
 	}
 }
