@@ -11,30 +11,31 @@ import java.util.Date;
 import java.util.List;
 
 import com.newlecture.web.entity.Notice;
+import com.newlecture.web.entity.NoticeView;
 
 public class NoticeService {
 	// getNoticeList메서드를 부를 때 인자의 개수에 따라 불려지는 메서드가 많은데 하는 일이 대부분 비슷함.(getNoticeCount도 마찬가지)
 	// 이런 기능들을 메서드마다 다 구현하게 되면 코드의 중복이 생기기 때문에
 	// 하나의 메서드만 구현하고 나머지 메서드는 구현된 메서드를 이용하는 형태로 만든다.
-	public List<Notice> getNoticeList(){ // 전체 글을 불러오는 서비스 메서드
+	public List<NoticeView> getNoticeList(){ // 전체 글을 불러오는 서비스 메서드
 		
 		return getNoticeList("title","",1);
 	}
-	public List<Notice> getNoticeList(int page){ // 해당 페이지의 글을 불러오는 서비스 메서드
+	public List<NoticeView> getNoticeList(int page){ // 해당 페이지의 글을 불러오는 서비스 메서드
 		
 		
 		return getNoticeList("title","",page);
 	}
-	public List<Notice> getNoticeList(String field, String query, int page){ // 사용자가 검색한 내용을 포함한 글을 불러오는 서비스 메서드
+	public List<NoticeView> getNoticeList(String field, String query, int page){ // 사용자가 검색한 내용을 포함한 글을 불러오는 서비스 메서드
 		
-		List<Notice> list = new ArrayList<>();
+		List<NoticeView> list = new ArrayList<>();
 		
 		// field는 왜 ?로 안넣나
 		// -> ?로 넣게 되면 값이 'title'이런 형태로 들어가게 되는데 여기서 우리가 원하는 형태는 ''가 빠진 title 이다.
 		// 그래서 어쩔 수 없이 그냥 sql에 넣었다.
 		String sql = "select * from( " + 
 				"select rownum num, N.* " + 
-				"from (select * from notice_ where "+field+" like ? order by regdate desc) N) " + 
+				"from (select * from notice_view where "+field+" like ? order by regdate desc) N) " + 
 				"where num between ? and ?";
 		
 		// page 시작 id : 1, 11, 21, 31 ... -> 등차수열 an = 1+(page-1)*10
@@ -58,8 +59,9 @@ public class NoticeService {
 				Date regdate = rs.getTimestamp("REGDATE");
 				String hit = rs.getString("HIT");
 				String files = rs.getString("FILES");
-				String content = rs.getString("CONTENT");
-				Notice notice = new Notice(id, title, writerId, regdate, hit, files, content);
+//				String content = rs.getString("CONTENT");
+				int cmtCount=rs.getInt("cmt_count");
+				NoticeView notice = new NoticeView(id, title, writerId, regdate, hit, files, cmtCount);
 				list.add(notice);
 			}
 
