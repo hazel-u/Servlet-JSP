@@ -14,6 +14,32 @@ import com.newlecture.web.entity.Notice;
 import com.newlecture.web.entity.NoticeView;
 
 public class NoticeService {
+	public int removeNoticeAll(int[] ids) { // 공지사항을 삭제하는 메서드, 총 삭제된 개수를 return
+		
+		return 0;
+	}
+	public int pubNoticeAll(int[] ids) { // 공개할 공지사항을 받아 공개하는 메서드, 공개한 개수를 return
+		
+		return 0;
+	}
+	public int insertNotice(Notice notice) { // 공지사항을 추가하는 메서드
+		
+		return 0;
+	}
+	public int deleteNotice(int id) { // 공지사항을 삭제하는 메서드
+		
+		return 0;
+	}
+	public int updateNotice(Notice notice) { // 공지사항을 수정하는 메서드
+		
+		return 0;
+	}
+	public List<Notice> getNoticeNewestList(){ // 최신의 공지사항들을 반환하는 메서드
+		
+		return null;
+	}
+	
+	
 	// getNoticeList메서드를 부를 때 인자의 개수에 따라 불려지는 메서드가 많은데 하는 일이 대부분 비슷함.(getNoticeCount도 마찬가지)
 	// 이런 기능들을 메서드마다 다 구현하게 되면 코드의 중복이 생기기 때문에
 	// 하나의 메서드만 구현하고 나머지 메서드는 구현된 메서드를 이용하는 형태로 만든다.
